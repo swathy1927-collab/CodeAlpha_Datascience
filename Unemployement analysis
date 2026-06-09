@@ -1,0 +1,50 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("Unemployment in India.csv")
+
+df.columns = df.columns.str.strip()
+
+print(df.head())
+
+print("\nDataset Shape:")
+print(df.shape)
+
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+df = df.dropna()
+
+plt.figure(figsize=(12,6))
+sns.barplot(x="Region", y="Estimated Unemployment Rate (%)", data=df)
+plt.xticks(rotation=90)
+plt.title("Unemployment Rate by Region")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.histplot(df["Estimated Unemployment Rate (%)"], bins=20, kde=True)
+plt.title("Distribution of Unemployment Rate")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.boxplot(x="Area", y="Estimated Unemployment Rate (%)", data=df)
+plt.title("Urban vs Rural Unemployment")
+plt.show()
+
+plt.figure(figsize=(8,6))
+corr = df.select_dtypes(include="number").corr()
+sns.heatmap(corr, annot=True, cmap="coolwarm")
+plt.title("Correlation Matrix")
+plt.show()
+
+print("\nAverage Unemployment Rate:")
+print(df["Estimated Unemployment Rate (%)"].mean())
+
+highest = df.loc[df["Estimated Unemployment Rate (%)"].idxmax()]
+
+print("\nRegion with Highest Unemployment:")
+print(highest["Region"])
+
+print("\nHighest Unemployment Rate:")
+print(highest["Estimated Unemployment Rate (%)"])
